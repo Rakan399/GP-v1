@@ -3,6 +3,7 @@ import 'package:myapp/page-1/Home.dart';
 import 'package:myapp/page-1/My_Car.dart';
 import 'package:myapp/page-1/My_Report.dart';
 import 'package:myapp/page-1/Welcome.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   const NavigationDrawerWidget({super.key});
@@ -68,10 +69,7 @@ class NavigationDrawerWidget extends StatelessWidget {
           ListTile(
             title: Text('Logout'),
             leading: Icon(Icons.exit_to_app),
-            onTap: () => {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => Welcome()))
-            },
+            // onTap: () => Get.f,
           ),
         ],
       ),

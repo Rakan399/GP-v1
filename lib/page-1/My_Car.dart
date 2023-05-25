@@ -12,7 +12,7 @@ class My_Car extends StatelessWidget {
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
 
-    return Container(
+    return SizedBox(
         width: double.infinity,
         child: Container(
           // androidlarge5Ne1 (30:24)

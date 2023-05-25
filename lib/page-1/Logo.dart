@@ -1,10 +1,15 @@
 import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:myapp/Cont/Usercont.dart';
+import 'package:myapp/Cont/Usercont.dart';
+import 'package:myapp/page-1/Home.dart';
+import 'package:myapp/page-1/Welcome.dart';
 
 class Logo extends StatefulWidget {
   const Logo({super.key});
@@ -14,6 +19,7 @@ class Logo extends StatefulWidget {
 }
 
 class _LogoState extends State<Logo> {
+  final Usercont usercont = Get.put(Usercont());
   @override
   void initState() {
     super.initState();
@@ -21,8 +27,9 @@ class _LogoState extends State<Logo> {
   }
 
   startTimer() {
-    var duration = Duration(seconds: 10);
-    return Timer(duration, route);
+    Future.delayed(const Duration(seconds: 4), () {
+      usercont.Home_Navigater();
+    });
   }
 
   route() {
@@ -31,13 +38,21 @@ class _LogoState extends State<Logo> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(),
+      body: Container(
+        color: Colors.white,
+        child: Center(
+          child: Image(
+              image: AssetImage('assets/page-1/App_Logo.gif'),
+              width: size.width * 0.5), //......
+        ),
+      ),
     );
   }
 
-  Widget content() {
-    return Container(child: Lottie.asset('assets/page-1/Logo.mp4'));
-  }
+  /* Widget content() {
+    return Container(child: Lottie.asset('assets/page-1/App_Logo'));
+  }*/
 }

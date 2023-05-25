@@ -1,192 +1,129 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:get/get.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myapp/Cont/local_storage.dart';
+import 'package:myapp/Cont/maincont.dart';
+import 'package:myapp/page-1/Missing.dart';
+import 'package:myapp/page-1/My_Car.dart';
+import 'package:myapp/page-1/My_Report.dart';
 import 'package:myapp/utils.dart';
 import 'package:myapp/page-1/AddCar.dart';
-import 'package:myapp/page-1/SuspiciouCar.dart';
+import 'package:myapp/page-1/Report.dart';
 import 'package:myapp/page-1/DefectiveCar.dart';
 import 'package:myapp/page-1/NavigationDrawerWidget.dart';
 
-class Home extends StatelessWidget {
+import '../Cont/Usercont.dart';
+
+class Home extends StatefulWidget {
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final maincont maincontroller = Get.find<maincont>();
+
   @override
   Widget build(BuildContext context) {
-    double baseWidth = 360;
-    double fem = MediaQuery.of(context).size.width / baseWidth;
-    double ffem = fem * 0.97;
+    //double baseWidth = 360;
+    //double fem = MediaQuery.of(context).size.width / baseWidth;
+    //double ffem = fem * 0.97;
+    Size size = MediaQuery.of(context).size;
 
-    return Container(
-      width: double.infinity,
-      child: Container(
-        // androidlarge5Ne1 (30:24)
-        width: double.infinity,
-        height: 800 * fem,
-        decoration: BoxDecoration(
-          color: Color(0xff7095b5),
-        ),
-        child: Stack(
-          children: [
-            Scaffold(
-              drawer: NavigationDrawerWidget(),
-              backgroundColor: Color(0xff7095b5),
-              appBar: AppBar(
-                title: Text(""),
-                backgroundColor: Color(0xff7095b5),
-              ),
-              body: Column(
-                children: [
-                  Container(
-                    // image25kZ (30:5)
-                    margin: EdgeInsets.fromLTRB(
-                        0 * fem, 50 * fem, 0 * fem, 0 * fem),
-                    width: 200 * fem,
-                    height: 70 * fem,
-                    child: Image.asset(
-                      'assets/page-1/images/image-2-beV.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 70,
-                  ),
-                  Positioned(
-                    // autogroupfvmfBjs (3RLcGmejmhrkUpsTpjfVMf)
-
-                    left: 36 * fem,
-                    top: 260 * fem,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      width: double.infinity,
-                      // width: 288 * fem,
-                      height: 96 * fem,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+    return GetBuilder<Usercont>(
+        init: Get.find<Usercont>(),
+        builder: (controller) {
+          return Container(
+            width: double.infinity,
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              body: Container(
+                // androidlarge5Ne1 (30:24)
+                width: double.infinity,
+                //  height: 200 * fem,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: controller.loading.value
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Column(
                         children: [
-                          Container(
-                            // rectangle8ssb (30:99)
-                            margin: EdgeInsets.fromLTRB(
-                                40 * fem, 0 * fem, 40 * fem, 0 * fem),
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => AddCar()));
-                              },
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: Container(
-                                width: 116 * fem,
-                                height: 96 * fem,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5 * fem),
-                                  child: Image.asset(
-                                    'assets/page-1/images/rectangle-8.png',
-                                    fit: BoxFit.cover,
+                          SizedBox(height: 50),
+                          GetBuilder<local_storage>(
+                              init: Get.find<local_storage>(),
+                              builder: (local_storage_controller) {
+                                return Container(
+                                  child: Text(
+                                    local_storage_controller.Get_UserModel()
+                                            .name ??
+                                        "",
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                    ),
                                   ),
-                                ),
+                                );
+                              }),
+                          SizedBox(height: 20),
+                          Expanded(
+                            child: GridView(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 20.0,
+                                mainAxisSpacing: 40.0,
                               ),
-                            ),
-                          ),
-                          TextButton(
-                            // rectangle9KDo (30:100)
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                            ),
-                            child: Container(
-                              width: 116 * fem,
-                              height: 96 * fem,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5 * fem),
-                                child: Image.asset(
-                                  'assets/page-1/images/rectangle-9.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                              children: [
+                                [
+                                  "assets/page-1/images/rectangle-8.png",
+                                  0,
+                                  AddCar()
+                                ],
+                                [
+                                  "assets/page-1/images/rectangle-9.png",
+                                  0,
+                                  Missing()
+                                ],
+                                ["assets/page-1/images/My_cars.png", 1, 1],
+                                [
+                                  "assets/page-1/images/REPORT.png",
+                                  0,
+                                  Report()
+                                ],
+                              ]
+                                  .map((data) => InkWell(
+                                        onTap: () {
+                                          if (data[1] as int == 0) {
+                                            Get.to(() => data[2] as Widget);
+                                          } else {
+                                            maincontroller.onChangeIndex(1);
+                                          }
+                                        },
+                                        child: Container(
+                                          width: size.width * 0.5,
+                                          height: size.width * 0.35,
+                                          padding: EdgeInsets.all(5),
+                                          //margin: EdgeInsets.only(bottom: 10),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xff7095b5),
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: Image.asset(data[0] as String),
+                                        ),
+                                      ))
+                                  .toList(),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 70,
-                  ),
-                  Positioned(
-                    // autogroupfvmfBjs (3RLcGmejmhrkUpsTpjfVMf)
-
-                    left: 36 * fem,
-                    top: 260 * fem,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      width: double.infinity,
-                      // width: 288 * fem,
-                      height: 96 * fem,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            // rectangle8ssb (30:99)
-                            margin: EdgeInsets.fromLTRB(
-                                40 * fem, 0 * fem, 40 * fem, 0 * fem),
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => SuspiciouCar()));
-                              },
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: Container(
-                                width: 116 * fem,
-                                height: 96 * fem,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5 * fem),
-                                  child: Image.asset(
-                                    'assets/page-1/images/rectangle-10.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            // rectangle11vN1 (30:102)
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => DefectiveCar()));
-                            },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                            ),
-                            child: Container(
-                              width: 116 * fem,
-                              height: 96 * fem,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5 * fem),
-                                child: Image.asset(
-                                  'assets/page-1/images/rectangle-11.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }

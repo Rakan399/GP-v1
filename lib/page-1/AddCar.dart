@@ -2,11 +2,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:get/get.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/page-1/Home.dart';
 import 'package:myapp/utils.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
+
+import '../Cont/Carcont.dart';
 
 class AddCar extends StatefulWidget {
   @override
@@ -62,197 +65,233 @@ class _AddCarState extends State<AddCar> {
     this.Car_Color.add({"id": 7, "Color": "Yellow"});
   }
 
+  final form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
-    return Container(
-      width: double.infinity,
-      child: Container(
-        // androidlarge2hLh (3:2)
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Color(0xffff),
-        ),
+    Size size = MediaQuery.of(context).size;
+    return GetBuilder<car>(
+        init: Get.put(car()),
+        builder: (controller) {
+          return Container(
+            width: double.infinity,
+            child: Container(
+              // androidlarge2hLh (3:2)
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color(0xffff),
+              ),
 
-        child: Scaffold(
-          //appBar: AppBar(
-          //title: Text("Add Car"),
-          //backgroundColor: Colors.redAccent,
-          //)
-          //,
-          body: Column(
-            children: [
-              Container(
-                // image25kZ (30:5)
-                margin:
-                    EdgeInsets.fromLTRB(20 * fem, 50 * fem, 0 * fem, 40 * fem),
-                width: 208 * fem,
-                height: 70 * fem,
-                child: Image.asset(
-                  'assets/page-1/images/image-1-Cku.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                // addcarb7K (37:128)
-                margin:
-                    EdgeInsets.fromLTRB(0 * fem, 0 * fem, 240 * fem, 0 * fem),
-                child: Text(
-                  'Add Car',
-                  style: SafeGoogleFont(
-                    'Inter',
-                    fontSize: 28 * fem,
-                    fontWeight: FontWeight.w800,
-                    height: 0.2125 * ffem / fem,
-                    color: Color.fromARGB(255, 39, 38, 38),
-                  ),
-                ),
-              ),
-              FormHelper.dropDownWidgetWithLabel(
-                context,
-                "Company Car",
-                "Select Company Car",
-                this.CompanyCarID,
-                this.ComanyCar,
-                (onChangedVaL) {
-                  this.CompanyCarID = onChangedVaL;
-                  print("Select CompanyCar: $onChangedVaL");
+              child: Scaffold(
+                body: SingleChildScrollView(
+                  child: Form(
+                    key: form,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 80,
+                        ),
+                        Container(
+                          // addcarb7K (37:128)
+                          margin: EdgeInsets.fromLTRB(
+                              0 * fem, 0 * fem, 200 * fem, 0 * fem),
+                          child: Text(
+                            'Add Car',
+                            style: SafeGoogleFont(
+                              'Inter',
+                              fontSize: 28 * fem,
+                              fontWeight: FontWeight.w800,
+                              height: 0.2125 * ffem / fem,
+                              color: Color(0xff7095b5),
+                            ),
+                          ),
+                        ),
+                        FormHelper.dropDownWidgetWithLabel(
+                          context,
+                          "",
+                          "Select Company Car",
+                          this.CompanyCarID,
+                          this.ComanyCar,
+                          (onChangedVaL) {
+                            this.CompanyCarID = onChangedVaL;
+                            print("Select CompanyCar: $onChangedVaL");
 
-                  this.Model_Type = this
-                      .ModelType
-                      .where(
-                        (stateItem) =>
-                            stateItem["ParentId"].toString() ==
-                            onChangedVaL.toString(),
-                      )
-                      .toList();
-                  this.ModelTypeID = null;
-                  setState(() {});
-                },
-                (onValidateVaL) {
-                  if (onValidateVaL == null) {
-                    return 'Plase Select CompanyCar';
-                  }
-                  return null;
-                },
-                borderColor: Theme.of(context).primaryColor,
-                borderFocusColor: Theme.of(context).primaryColor,
-                borderRadius: 10,
-                optionValue: "id",
-                optionLabel: "label",
-              ),
-              FormHelper.dropDownWidgetWithLabel(
-                context,
-                "Model Type",
-                "Select Model Type",
-                this.ModelTypeID,
-                this.Model_Type,
-                (onChangedVaL) {
-                  this.ModelTypeID = onChangedVaL;
-                  print("Select Model Type: $onChangedVaL");
-                },
-                (onValidateVaL) {
-                  return null;
-                },
-                borderColor: Theme.of(context).primaryColor,
-                borderFocusColor: Theme.of(context).primaryColor,
-                borderRadius: 10,
-                optionValue: "ID",
-                optionLabel: "Name",
-              ),
-              FormHelper.dropDownWidgetWithLabel(
-                context,
-                "Car Color",
-                "Select Car Color",
-                this.CarColorID,
-                this.Car_Color,
-                (onChangedVaL) {
-                  this.CarColorID = onChangedVaL;
-                  print("Select Car Color: $onChangedVaL");
-                },
-                (onValidateVaL) {
-                  if (onValidateVaL == null) {
-                    return 'Plase Select Car Color';
-                  }
-                  return null;
-                },
-                borderColor: Theme.of(context).primaryColor,
-                borderFocusColor: Theme.of(context).primaryColor,
-                borderRadius: 10,
-                optionValue: "id",
-                optionLabel: "Color",
-              ),
-              SizedBox(
-                height: 120,
-              ),
-              Container(
-                margin:
-                    EdgeInsets.fromLTRB(44 * fem, 0 * fem, 42 * fem, 0 * fem),
-                width: double.infinity,
-                height: 45 * fem,
-                decoration: BoxDecoration(
-                  color: Color(0xff7095b5),
-                  borderRadius: BorderRadius.circular(20 * fem),
-                ),
+                            this.Model_Type = this
+                                .ModelType
+                                .where(
+                                  (stateItem) =>
+                                      stateItem["ParentId"].toString() ==
+                                      onChangedVaL.toString(),
+                                )
+                                .toList();
+                            this.ModelTypeID = null;
+                            setState(() {});
+                          },
+                          (onValidateVaL) {
+                            if (onValidateVaL == null) {
+                              return 'Plase Select CompanyCar';
+                            }
+                            return null;
+                          },
+                          borderColor: Theme.of(context).primaryColor,
+                          borderFocusColor: Theme.of(context).primaryColor,
+                          borderRadius: 10,
+                          optionValue: "id",
+                          optionLabel: "label",
+                        ),
+                        FormHelper.dropDownWidgetWithLabel(
+                          context,
+                          "",
+                          "Select Model Type",
+                          this.ModelTypeID,
+                          this.Model_Type,
+                          (onChangedVaL) {
+                            this.ModelTypeID = onChangedVaL;
+                            print("Select Model Type: $onChangedVaL");
+                          },
+                          (onValidateVaL) {
+                            return null;
+                          },
+                          borderColor: Theme.of(context).primaryColor,
+                          borderFocusColor: Theme.of(context).primaryColor,
+                          borderRadius: 10,
+                          optionValue: "ID",
+                          optionLabel: "Name",
+                        ),
+                        FormHelper.dropDownWidgetWithLabel(
+                          context,
+                          "",
+                          "Select Car Color",
+                          this.CarColorID,
+                          this.Car_Color,
+                          (onChangedVaL) {
+                            this.CarColorID = onChangedVaL;
+                            print("Select Car Color: $onChangedVaL");
+                          },
+                          (onValidateVaL) {
+                            if (onValidateVaL == null) {
+                              return 'Plase Select Car Color';
+                            }
+                            return null;
+                          },
+                          borderColor: Theme.of(context).primaryColor,
+                          borderFocusColor: Theme.of(context).primaryColor,
+                          borderRadius: 10,
+                          optionValue: "id",
+                          optionLabel: "Color",
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  onChanged: (value) {},
+                                  decoration: InputDecoration(
+                                      hintText: 'Plate Number',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      )),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                height: 50,
+                                width: 60,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Color(0xff7095b5),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child:
+                                    Icon(Icons.camera_alt, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 80,
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              44 * fem, 0 * fem, 42 * fem, 0 * fem),
+                          width: double.infinity,
+                          height: 45 * fem,
+                          decoration: BoxDecoration(
+                            color: Color(0xff7095b5),
+                            borderRadius: BorderRadius.circular(20 * fem),
+                          ),
 
-                // autogroupzibfNt5 (3RLmeFYAPv9zvfppY5ZiBf)
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Color(0xffffffff),
-                    padding: const EdgeInsets.all(16.0),
-                    textStyle: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
+                          // autogroupzibfNt5 (3RLmeFYAPv9zvfppY5ZiBf)
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Color(0xffffffff),
+                              padding: const EdgeInsets.all(16.0),
+                              textStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            onPressed: () {
+                              if (CompanyCarID == null) {
+                                Get.snackbar("Cannot Continue",
+                                    "Please Select The Company");
+                              } else if (ModelTypeID == null) {
+                                Get.snackbar("Cannot Continue",
+                                    "Please Select The Model Type");
+                              } else if (CarColorID == null) {
+                                Get.snackbar("Cannot Continue",
+                                    "Please Select The Car Color");
+                              }
+                            },
+                            child: const Text('Submit'),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              44 * fem, 0 * fem, 42 * fem, 0 * fem),
+                          width: double.infinity,
+                          height: 45 * fem,
+                          decoration: BoxDecoration(
+                            color: Color(0xff7095b5),
+                            borderRadius: BorderRadius.circular(20 * fem),
+                          ),
+
+                          // autogroupzibfNt5 (3RLmeFYAPv9zvfppY5ZiBf)
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Color(0xffffffff),
+                              padding: const EdgeInsets.all(16.0),
+                              textStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text('Back'),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Home()));
-                  },
-                  child: const Text('Submit'),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                margin:
-                    EdgeInsets.fromLTRB(44 * fem, 0 * fem, 42 * fem, 0 * fem),
-                width: double.infinity,
-                height: 45 * fem,
-                decoration: BoxDecoration(
-                  color: Color(0xff7095b5),
-                  borderRadius: BorderRadius.circular(20 * fem),
-                ),
-
-                // autogroupzibfNt5 (3RLmeFYAPv9zvfppY5ZiBf)
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Color(0xffffffff),
-                    padding: const EdgeInsets.all(16.0),
-                    textStyle: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Home()));
-                  },
-                  child: const Text('Back'),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
 
     return Container(width: double.infinity, child: Container());
   }

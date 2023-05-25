@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:myapp/Cont/Usercont.dart';
 import 'package:myapp/page-1/Login.dart';
-import 'package:myapp/page-1/Welcome.dart';
 import 'package:myapp/page-1/NavigationDrawerWidget.dart';
+import 'package:myapp/utils.dart';
+import 'package:snippet_coder_utils/FormHelper.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 
 class Signup extends StatelessWidget {
   const Signup({Key? key}) : super(key: key);
@@ -30,11 +36,6 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawerWidget(),
-      appBar: AppBar(
-        title: Text("Signup"),
-        backgroundColor: Color(0xff7095b5),
-      ),
       body: Container(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: SignUpForm()),
@@ -51,221 +52,158 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   final _passKey = GlobalKey<FormFieldState>();
 
-  String _name = '';
-  String _email = '';
-  int _ID = -1;
-  int _age = -1;
-  String _maritalStatus = 'single';
-  int _selectedGender = 0;
-  String _password = '';
-  bool _termsChecked = true;
-
-  List<DropdownMenuItem<int>> genderList = [];
-
-  void loadGenderList() {
-    genderList = [];
-    genderList.add(const DropdownMenuItem(
-      child: Text('Male'),
-      value: 0,
-    ));
-    genderList.add(const DropdownMenuItem(
-      child: Text('Female'),
-      value: 1,
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
-    loadGenderList();
-    // Build a Form widget using the _formKey we created above
-    return Form(
-        key: _formKey,
-        child: ListView(
-          children: getFormWidget(),
-        ));
-  }
+    double baseWidth = 360;
+    double fem = MediaQuery.of(context).size.width / baseWidth;
+    double ffem = fem * 0.97;
 
-  List<Widget> getFormWidget() {
-    List<Widget> formWidget = [];
-
-    formWidget.add(TextFormField(
-      decoration:
-          const InputDecoration(labelText: 'Enter Name', hintText: 'Name'),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter a name';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          _name = value.toString();
+    return GetBuilder<Usercont>(
+        init: Get.find<Usercont>(),
+        builder: (controller) {
+          return Container(
+            width: double.infinity,
+            child: Container(
+              // androidlarge5Ne1 (30:24)
+              width: double.infinity,
+              height: 800 * fem,
+              decoration: BoxDecoration(
+                color: Color(0xff7095b5),
+              ),
+              child: Stack(
+                children: [
+                  Scaffold(
+                    backgroundColor: Color(0xffffffff),
+                    body: SingleChildScrollView(
+                      child: Column(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              padding: EdgeInsets.fromLTRB(
+                                  9 * fem, 6 * fem, 14 * fem, 0 * fem),
+                              width: double.infinity),
+                          Container(
+                            // image25kZ (30:5)
+                            margin: EdgeInsets.fromLTRB(
+                                5 * fem, 0 * fem, 0 * fem, 0 * fem),
+                            width: 170 * fem,
+                            height: 100 * fem,
+                            child: Image.asset(
+                              'assets/page-1/images/image-1.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Container(
+                            // welcomeMAM (18:8)
+                            margin: EdgeInsets.fromLTRB(
+                                0 * fem, 0 * fem, 250 * fem, 0 * fem),
+                            child: Text(
+                              'SignUp',
+                              style: SafeGoogleFont(
+                                'Inter',
+                                fontSize: 20 * ffem,
+                                fontWeight: FontWeight.w800,
+                                height: 1.2125 * ffem / fem,
+                                color: Color(0xff7095b5),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: TextField(
+                              onChanged: (value) {},
+                              controller: controller.namecontroller,
+                              decoration: InputDecoration(
+                                  hintText: 'Name',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  )),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: TextField(
+                              onChanged: (value) {},
+                              controller: controller.emailcontroller,
+                              decoration: InputDecoration(
+                                  hintText: 'Email',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  )),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: TextField(
+                              onChanged: (value) {},
+                              controller: controller.passwordcontroller,
+                              decoration: InputDecoration(
+                                  hintText: 'Password',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  )),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: TextField(
+                              onChanged: (value) {},
+                              controller: controller.Short_addersscontroller,
+                              decoration: InputDecoration(
+                                  hintText: 'Short adderss',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  )),
+                            ),
+                          ),
+                          ElevatedButton(
+                              onPressed: () async {
+                                controller.signup();
+                              },
+                              child: const Text(
+                                  'Sign Up') /*onPressed: onPressedSubmit*/
+                              ),
+                          SizedBox(height: 14),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Already have an account? ",
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                              InkWell(
+                                onTap: () => Get.to(() => Login()),
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(color: Colors.lightBlue),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  /*DropdownMenuItem<String>buildMenuItem(String item) => DropdownMenuItem(
+                  value: item,
+                child: Text(item
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                ),
+                
+                );*/
+                ],
+              ),
+            ),
+          );
         });
-      },
-    ));
-
-    validateEmail(String? value) {
-      if (value!.isEmpty) {
-        return 'Please enter mail';
-      }
-
-      Pattern pattern =
-          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-      RegExp regex = RegExp(pattern.toString());
-      if (!regex.hasMatch(value.toString())) {
-        return 'Enter Valid Email';
-      } else {
-        return null;
-      }
-    }
-
-    formWidget.add(TextFormField(
-      decoration:
-          const InputDecoration(labelText: 'Enter Email', hintText: 'Email'),
-      keyboardType: TextInputType.emailAddress,
-      validator: validateEmail,
-      onSaved: (value) {
-        setState(() {
-          _email = value.toString();
-        });
-      },
-    ));
-
-    formWidget.add(TextFormField(
-      decoration: const InputDecoration(hintText: 'ID', labelText: 'Enter ID'),
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Enter ID';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          _ID = int.parse(value.toString());
-        });
-      },
-    ));
-    formWidget.add(TextFormField(
-      decoration:
-          const InputDecoration(hintText: 'Age', labelText: 'Enter Age'),
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Enter Age';
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          _ID = int.parse(value.toString());
-        });
-      },
-    ));
-
-    formWidget.add(DropdownButton(
-      hint: const Text('Select Gender'),
-      items: genderList,
-      value: _selectedGender,
-      onChanged: (value) {
-        setState(() {
-          _selectedGender = int.parse(value.toString());
-        });
-      },
-      isExpanded: true,
-    ));
-
-    formWidget.add(
-      TextFormField(
-          key: _passKey,
-          obscureText: true,
-          decoration: const InputDecoration(
-              hintText: 'Password', labelText: 'Enter Password'),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Please Enter password';
-            } else if (value.length < 8) {
-              return 'Password should be more than 8 characters';
-            } else {
-              return null;
-            }
-          }),
-    );
-
-    formWidget.add(
-      TextFormField(
-          obscureText: true,
-          decoration: const InputDecoration(
-              hintText: 'Confirm Password',
-              labelText: 'Enter Confirm Password'),
-          validator: (confirmPassword) {
-            if (confirmPassword != null && confirmPassword.isEmpty) {
-              return 'Enter confirm password';
-            }
-            var password = _passKey.currentState?.value;
-            if (confirmPassword != null &&
-                confirmPassword.compareTo(password) != 0) {
-              return 'Password mismatch';
-            } else {
-              return null;
-            }
-          },
-          onSaved: (value) {
-            setState(() {
-              _password = value.toString();
-            });
-          }),
-    );
-
-    formWidget.add(CheckboxListTile(
-      value: _termsChecked,
-      onChanged: (value) {
-        setState(() {
-          _termsChecked = value.toString().toLowerCase() == 'true';
-        });
-      },
-      subtitle: !_termsChecked
-          ? const Text(
-              'Required',
-              style: TextStyle(color: Colors.red, fontSize: 12.0),
-            )
-          : null,
-      title: const Text(
-        'I agree to the terms and condition',
-      ),
-      controlAffinity: ListTileControlAffinity.leading,
-    ));
-
-    void onPressedSubmit() {
-      if (_formKey.currentState!.validate() && _termsChecked) {
-        _formKey.currentState?.save();
-
-        print("Name " + _name);
-        print("Email " + _email);
-        print("Age " + _age.toString());
-        switch (_selectedGender) {
-          case 0:
-            print("Gender Male");
-            break;
-          case 1:
-            print("Gender Female");
-            break;
-        }
-        print("Marital Status " + _maritalStatus);
-        print("Password " + _password);
-        print("Termschecked " + _termsChecked.toString());
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Form Submitted')));
-        Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
-      }
-    }
-
-    formWidget.add(ElevatedButton(
-        child: const Text('Sign Up'), onPressed: onPressedSubmit));
-
-    return formWidget;
   }
 }

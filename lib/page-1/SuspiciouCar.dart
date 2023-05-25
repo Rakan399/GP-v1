@@ -18,13 +18,17 @@ class _SuspiciouCarState extends State<SuspiciouCar> {
   List<dynamic> ModelType = [];
   List<dynamic> Model_Type = [];
   List<dynamic> Car_Color = [];
+  List<dynamic> Type_Report = [];
   String? CompanyCarID;
   String? ModelTypeID;
   String? CarColorID;
+  String? Type_ReportID;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    this.Type_Report.add({"id": 1, "Type": "Suspiciou Car"});
+    this.Type_Report.add({"id": 2, "Type": "Defective Car"});
 
     this.ComanyCar.add({"id": 1, "label": "TOYOTA"});
     this.ComanyCar.add({"id": 2, "label": "GMC"});
@@ -83,172 +87,226 @@ class _SuspiciouCarState extends State<SuspiciouCar> {
           //backgroundColor: Colors.redAccent,
           //)
           //,
-          body: Column(
-            children: [
-              Container(
-                // image25kZ (30:5)
-                margin:
-                    EdgeInsets.fromLTRB(20 * fem, 50 * fem, 0 * fem, 40 * fem),
-                width: 208 * fem,
-                height: 70 * fem,
-                child: Image.asset(
-                  'assets/page-1/images/image-1-Cku.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                // addcarb7K (37:128)
-                margin:
-                    EdgeInsets.fromLTRB(0 * fem, 0 * fem, 150 * fem, 0 * fem),
-                child: Text(
-                  'Suspiciou Car ',
-                  style: SafeGoogleFont(
-                    'Inter',
-                    fontSize: 28 * fem,
-                    fontWeight: FontWeight.w800,
-                    height: 0.2125 * ffem / fem,
-                    color: Color.fromARGB(255, 39, 38, 38),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  // image25kZ (30:5)
+                  margin: EdgeInsets.fromLTRB(
+                      20 * fem, 10 * fem, 0 * fem, 40 * fem),
+                  width: 208 * fem,
+                  height: 70 * fem,
+                  child: Image.asset(
+                    'assets/page-1/images/image-1-Cku.png',
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-              FormHelper.dropDownWidgetWithLabel(
-                context,
-                "Company Car",
-                "Select Company Car",
-                this.CompanyCarID,
-                this.ComanyCar,
-                (onChangedVaL) {
-                  this.CompanyCarID = onChangedVaL;
-                  print("Select CompanyCar: $onChangedVaL");
-
-                  this.Model_Type = this
-                      .ModelType
-                      .where(
-                        (stateItem) =>
-                            stateItem["ParentId"].toString() ==
-                            onChangedVaL.toString(),
-                      )
-                      .toList();
-                  this.ModelTypeID = null;
-                  setState(() {});
-                },
-                (onValidateVaL) {
-                  if (onValidateVaL == null) {
-                    return 'Plase Select CompanyCar';
-                  }
-                  return null;
-                },
-                borderColor: Theme.of(context).primaryColor,
-                borderFocusColor: Theme.of(context).primaryColor,
-                borderRadius: 10,
-                optionValue: "id",
-                optionLabel: "label",
-              ),
-              FormHelper.dropDownWidgetWithLabel(
-                context,
-                "Model Type",
-                "Select Model Type",
-                this.ModelTypeID,
-                this.Model_Type,
-                (onChangedVaL) {
-                  this.ModelTypeID = onChangedVaL;
-                  print("Select Model Type: $onChangedVaL");
-                },
-                (onValidateVaL) {
-                  return null;
-                },
-                borderColor: Theme.of(context).primaryColor,
-                borderFocusColor: Theme.of(context).primaryColor,
-                borderRadius: 10,
-                optionValue: "ID",
-                optionLabel: "Name",
-              ),
-              FormHelper.dropDownWidgetWithLabel(
-                context,
-                "Car Color",
-                "Select Car Color",
-                this.CarColorID,
-                this.Car_Color,
-                (onChangedVaL) {
-                  this.CarColorID = onChangedVaL;
-                  print("Select Car Color: $onChangedVaL");
-                },
-                (onValidateVaL) {
-                  if (onValidateVaL == null) {
-                    return 'Plase Select Car Color';
-                  }
-                  return null;
-                },
-                borderColor: Theme.of(context).primaryColor,
-                borderFocusColor: Theme.of(context).primaryColor,
-                borderRadius: 10,
-                optionValue: "id",
-                optionLabel: "Color",
-              ),
-              SizedBox(
-                height: 120,
-              ),
-              Container(
-                margin:
-                    EdgeInsets.fromLTRB(44 * fem, 0 * fem, 42 * fem, 0 * fem),
-                width: double.infinity,
-                height: 45 * fem,
-                decoration: BoxDecoration(
-                  color: Color(0xff7095b5),
-                  borderRadius: BorderRadius.circular(20 * fem),
+                SizedBox(
+                  height: 0,
                 ),
-
-                // autogroupzibfNt5 (3RLmeFYAPv9zvfppY5ZiBf)
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Color(0xffffffff),
-                    padding: const EdgeInsets.all(16.0),
-                    textStyle: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
+                Container(
+                  // addcarb7K (37:128)
+                  margin:
+                      EdgeInsets.fromLTRB(0 * fem, 0 * fem, 250 * fem, 0 * fem),
+                  child: Text(
+                    'Report ',
+                    style: SafeGoogleFont(
+                      'Inter',
+                      fontSize: 28 * fem,
+                      fontWeight: FontWeight.w800,
+                      height: 0.2125 * ffem / fem,
+                      color: Color(0xff7095b5),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Home()));
+                ),
+                SizedBox(
+                  height: 0,
+                ),
+                FormHelper.dropDownWidgetWithLabel(
+                  context,
+                  "",
+                  "Select Report Type",
+                  this.Type_ReportID,
+                  this.Type_Report,
+                  (onChangedVaL) {
+                    this.Type_ReportID = onChangedVaL;
+                    print("Select Report Type: $onChangedVaL");
                   },
-                  child: const Text('Submit'),
+                  (onValidateVaL) {
+                    if (onValidateVaL == null) {
+                      return 'Plase Select Report Type';
+                    }
+                    return null;
+                  },
+                  borderColor: Theme.of(context).primaryColor,
+                  borderFocusColor: Theme.of(context).primaryColor,
+                  borderRadius: 10,
+                  optionValue: "id",
+                  optionLabel: "Type",
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                margin:
-                    EdgeInsets.fromLTRB(44 * fem, 0 * fem, 42 * fem, 0 * fem),
-                width: double.infinity,
-                height: 45 * fem,
-                decoration: BoxDecoration(
-                  color: Color(0xff7095b5),
-                  borderRadius: BorderRadius.circular(20 * fem),
-                ),
+                FormHelper.dropDownWidgetWithLabel(
+                  context,
+                  "",
+                  "Select Company Car",
+                  this.CompanyCarID,
+                  this.ComanyCar,
+                  (onChangedVaL) {
+                    this.CompanyCarID = onChangedVaL;
+                    print("Select CompanyCar: $onChangedVaL");
 
-                // autogroupzibfNt5 (3RLmeFYAPv9zvfppY5ZiBf)
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Color(0xffffffff),
-                    padding: const EdgeInsets.all(16.0),
-                    textStyle: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
+                    this.Model_Type = this
+                        .ModelType
+                        .where(
+                          (stateItem) =>
+                              stateItem["ParentId"].toString() ==
+                              onChangedVaL.toString(),
+                        )
+                        .toList();
+                    this.ModelTypeID = null;
+                    setState(() {});
+                  },
+                  (onValidateVaL) {
+                    if (onValidateVaL == null) {
+                      return 'Plase Select CompanyCar';
+                    }
+                    return null;
+                  },
+                  borderColor: Theme.of(context).primaryColor,
+                  borderFocusColor: Theme.of(context).primaryColor,
+                  borderRadius: 10,
+                  optionValue: "id",
+                  optionLabel: "label",
+                ),
+                FormHelper.dropDownWidgetWithLabel(
+                  context,
+                  "",
+                  "Select Model Type",
+                  this.ModelTypeID,
+                  this.Model_Type,
+                  (onChangedVaL) {
+                    this.ModelTypeID = onChangedVaL;
+                    print("Select Model Type: $onChangedVaL");
+                  },
+                  (onValidateVaL) {
+                    return null;
+                  },
+                  borderColor: Theme.of(context).primaryColor,
+                  borderFocusColor: Theme.of(context).primaryColor,
+                  borderRadius: 10,
+                  optionValue: "ID",
+                  optionLabel: "Name",
+                ),
+                FormHelper.dropDownWidgetWithLabel(
+                  context,
+                  "",
+                  "Select Car Color",
+                  this.CarColorID,
+                  this.Car_Color,
+                  (onChangedVaL) {
+                    this.CarColorID = onChangedVaL;
+                    print("Select Car Color: $onChangedVaL");
+                  },
+                  (onValidateVaL) {
+                    if (onValidateVaL == null) {
+                      return 'Plase Select Car Color';
+                    }
+                    return null;
+                  },
+                  borderColor: Theme.of(context).primaryColor,
+                  borderFocusColor: Theme.of(context).primaryColor,
+                  borderRadius: 10,
+                  optionValue: "id",
+                  optionLabel: "Color",
+                ),
+                SizedBox(
+                  height: 0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 20, 150, 0),
+                  child: TextField(
+                    onChanged: (value) {},
+                    decoration: InputDecoration(
+                        hintText: 'Plate Number',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(
+                      270 * fem, 0 * fem, 20 * fem, 0 * fem),
+                  width: double.infinity,
+                  height: 45 * fem,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5 * fem),
+                    child: Image.asset(
+                      'assets/page-1/images/rectangle-12-Hbb.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Home()));
-                  },
-                  child: const Text('Back'),
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  margin:
+                      EdgeInsets.fromLTRB(44 * fem, 0 * fem, 42 * fem, 0 * fem),
+                  width: double.infinity,
+                  height: 45 * fem,
+                  decoration: BoxDecoration(
+                    color: Color(0xff7095b5),
+                    borderRadius: BorderRadius.circular(20 * fem),
+                  ),
+
+                  // autogroupzibfNt5 (3RLmeFYAPv9zvfppY5ZiBf)
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Color(0xffffffff),
+                      padding: const EdgeInsets.all(16.0),
+                      textStyle: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => Home()));
+                    },
+                    child: const Text('Submit'),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  margin:
+                      EdgeInsets.fromLTRB(44 * fem, 0 * fem, 42 * fem, 0 * fem),
+                  width: double.infinity,
+                  height: 45 * fem,
+                  decoration: BoxDecoration(
+                    color: Color(0xff7095b5),
+                    borderRadius: BorderRadius.circular(20 * fem),
+                  ),
+
+                  // autogroupzibfNt5 (3RLmeFYAPv9zvfppY5ZiBf)
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Color(0xffffffff),
+                      padding: const EdgeInsets.all(16.0),
+                      textStyle: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => Home()));
+                    },
+                    child: const Text('Back'),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
