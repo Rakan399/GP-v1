@@ -3,36 +3,42 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/Cont/local_storage.dart';
-import 'package:myapp/Model/UserModel.dart';
 import 'package:myapp/Model/carModel.dart';
-import 'package:myapp/Utils/Constant.dart';
 import 'package:myapp/page-1/Home.dart';
-import 'package:myapp/page-1/mainscreen.dart';
 import 'package:myapp/utils.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 
-import '../Cont/Carcont.dart';
+import '../Model/ReportModel.dart';
+import '../Model/UserModel.dart';
+import '../Cont/ReportCont.dart';
+import 'mainscreen.dart';
 
-class AddCar extends StatefulWidget {
+class Report extends StatefulWidget {
   @override
-  _AddCarState createState() => _AddCarState();
+  State<Report> createState() => _Report();
 }
 
-class _AddCarState extends State<AddCar> {
+class _Report extends State<Report> {
   List<dynamic> ComanyCar = [];
   List<dynamic> ModelType = [];
   List<dynamic> Model_Type = [];
   List<dynamic> Car_Color = [];
+  List<dynamic> Type_Report = [];
   String? CompanyCarID;
   String? ModelTypeID;
   String? CarColorID;
+  String? Type_ReportID;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    this.Type_Report.add({"id": 1, "Type": "Suspiciou Car"});
+    this.Type_Report.add({"id": 2, "Type": "Defective Car"});
 
     this.ComanyCar.add({"id": 1, "label": "TOYOTA"});
     this.ComanyCar.add({"id": 2, "label": "GMC"});
@@ -77,8 +83,8 @@ class _AddCarState extends State<AddCar> {
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
     Size size = MediaQuery.of(context).size;
-    return GetBuilder<car>(
-        init: Get.find<car>(),
+    return GetBuilder<Report_cont>(
+        init: Get.find<Report_cont>(), //report controller?
         builder: (controller) {
           return Container(
             width: double.infinity,
@@ -108,7 +114,7 @@ class _AddCarState extends State<AddCar> {
                                 margin: EdgeInsets.fromLTRB(
                                     0 * fem, 0 * fem, 200 * fem, 0 * fem),
                                 child: Text(
-                                  'Add Car',
+                                  'Report',
                                   style: SafeGoogleFont(
                                     'Inter',
                                     fontSize: 28 * fem,
@@ -117,6 +123,29 @@ class _AddCarState extends State<AddCar> {
                                     color: Color(0xff7095b5),
                                   ),
                                 ),
+                              ),
+                              FormHelper.dropDownWidgetWithLabel(
+                                context,
+                                "",
+                                "Select Report Type",
+                                this.Type_ReportID,
+                                this.Type_Report,
+                                (onChangedVaL) {
+                                  this.Type_ReportID = onChangedVaL;
+                                  print("Select Report Type: $onChangedVaL");
+                                },
+                                (onValidateVaL) {
+                                  if (onValidateVaL == null) {
+                                    return 'Plase Select Report Type';
+                                  }
+                                  return null;
+                                },
+                                borderColor: Theme.of(context).primaryColor,
+                                borderFocusColor:
+                                    Theme.of(context).primaryColor,
+                                borderRadius: 10,
+                                optionValue: "id",
+                                optionLabel: "Type",
                               ),
                               FormHelper.dropDownWidgetWithLabel(
                                 context,
@@ -204,27 +233,24 @@ class _AddCarState extends State<AddCar> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: TextField(
-                                          controller:
-                                              controller.platenumbercontroller,
-                                          enabled: false,
-                                          onChanged: (value) {},
-                                          decoration: InputDecoration(
-                                              hintText: 'Plate Number',
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              )),
-                                        ),
+                                      child: TextField(
+                                        controller:
+                                            controller.platenumbercontroller,
+                                        enabled: false,
+                                        onChanged: (value) {},
+                                        decoration: InputDecoration(
+                                            hintText: 'Plate Number',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            )),
                                       ),
                                     ),
                                     SizedBox(
                                       width: 20,
                                     ),
                                     InkWell(
-                                      onTap: () => controller.image_car(),
+                                      onTap: () => controller.image_report(),
                                       child: Container(
                                         height: 50,
                                         width: 60,
@@ -265,7 +291,16 @@ class _AddCarState extends State<AddCar> {
                                     ),
                                   ),
                                   onPressed: () {
+                                    print(
+                                      this.Type_Report[
+                                              int.parse(Type_ReportID!) - 1]
+                                          ["Type"],
+                                    );
+
                                     if (CompanyCarID == null) {
+                                      Get.snackbar("Cannot Continue",
+                                          "Please Select report type");
+                                    } else if (CompanyCarID == null) {
                                       Get.snackbar("Cannot Continue",
                                           "Please Select The Company");
                                     } else if (ModelTypeID == null) {
@@ -286,24 +321,29 @@ class _AddCarState extends State<AddCar> {
                                       UserModel userModel =
                                           Get.find<local_storage>()
                                               .Get_UserModel();
-                                      controller.Add_car(
-                                        car_model(
-                                          user: userModel,
-                                          status: statuses.avaliable.name,
-                                          PlateNumber: controller
-                                              .platenumbercontroller.text,
-                                          CompanyCar: this.ComanyCar[
-                                                  int.parse(CompanyCarID!) - 1]
-                                              ["label"],
-                                          ModelCar: this.ModelType[
-                                                  int.parse(ModelTypeID!) - 1]
-                                              ["Name"],
-                                          CarColor: this.Car_Color[
-                                                  int.parse(CarColorID!) - 1]
-                                              ["Color"],
+                                      controller.Add_report(
+                                        ReportModel(
+                                          reporter: userModel,
+                                          createdAt: DateTime.now(),
+                                          type: this.Type_Report[
+                                                  int.parse(Type_ReportID!) - 1]
+                                              ["Type"],
+                                          car: car_model(
+                                            PlateNumber: controller
+                                                .platenumbercontroller.text,
+                                            CompanyCar: this.ComanyCar[
+                                                int.parse(CompanyCarID!) -
+                                                    1]["label"],
+                                            ModelCar: this.ModelType[
+                                                    int.parse(ModelTypeID!) - 1]
+                                                ["Name"],
+                                            CarColor: this.Car_Color[
+                                                    int.parse(CarColorID!) - 1]
+                                                ["Color"],
+                                          ),
                                         ),
                                       );
-                                      Get.snackbar("Car has been add", "");
+                                      Get.snackbar("Car has been reported", "");
                                       Get.offAll(() => mainscreen());
                                     }
                                   },

@@ -70,128 +70,139 @@ class _SignUpFormState extends State<SignUpForm> {
               decoration: BoxDecoration(
                 color: Color(0xff7095b5),
               ),
+
               child: Stack(
                 children: [
                   Scaffold(
                     backgroundColor: Color(0xffffffff),
-                    body: SingleChildScrollView(
-                      child: Column(
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                              padding: EdgeInsets.fromLTRB(
-                                  9 * fem, 6 * fem, 14 * fem, 0 * fem),
-                              width: double.infinity),
-                          Container(
-                            // image25kZ (30:5)
-                            margin: EdgeInsets.fromLTRB(
-                                5 * fem, 0 * fem, 0 * fem, 0 * fem),
-                            width: 170 * fem,
-                            height: 100 * fem,
-                            child: Image.asset(
-                              'assets/page-1/images/image-1.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                            // welcomeMAM (18:8)
-                            margin: EdgeInsets.fromLTRB(
-                                0 * fem, 0 * fem, 250 * fem, 0 * fem),
-                            child: Text(
-                              'SignUp',
-                              style: SafeGoogleFont(
-                                'Inter',
-                                fontSize: 20 * ffem,
-                                fontWeight: FontWeight.w800,
-                                height: 1.2125 * ffem / fem,
-                                color: Color(0xff7095b5),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: TextField(
-                              onChanged: (value) {},
-                              controller: controller.namecontroller,
-                              decoration: InputDecoration(
-                                  hintText: 'Name',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  )),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: TextField(
-                              onChanged: (value) {},
-                              controller: controller.emailcontroller,
-                              decoration: InputDecoration(
-                                  hintText: 'Email',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  )),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: TextField(
-                              onChanged: (value) {},
-                              controller: controller.passwordcontroller,
-                              decoration: InputDecoration(
-                                  hintText: 'Password',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  )),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: TextField(
-                              onChanged: (value) {},
-                              controller: controller.Short_addersscontroller,
-                              decoration: InputDecoration(
-                                  hintText: 'Short adderss',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  )),
-                            ),
-                          ),
-                          ElevatedButton(
-                              onPressed: () async {
-                                controller.signup();
-                              },
-                              child: const Text(
-                                  'Sign Up') /*onPressed: onPressedSubmit*/
-                              ),
-                          SizedBox(height: 14),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Already have an account? ",
-                                style: TextStyle(color: Colors.black54),
-                              ),
-                              InkWell(
-                                onTap: () => Get.to(() => Login()),
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(color: Colors.lightBlue),
-                                ),
-                              ),
-                            ],
+                    body: controller.loading.value
+                        ? Center(
+                            child: CircularProgressIndicator(),
                           )
-                        ],
-                      ),
-                    ),
+                        : SingleChildScrollView(
+                            child: Column(
+                              // crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                    padding: EdgeInsets.fromLTRB(
+                                        9 * fem, 6 * fem, 14 * fem, 0 * fem),
+                                    width: double.infinity),
+                                Container(
+                                  // image25kZ (30:5)
+                                  margin: EdgeInsets.fromLTRB(
+                                      5 * fem, 0 * fem, 0 * fem, 0 * fem),
+                                  width: 170 * fem,
+                                  height: 100 * fem,
+                                  child: Image.asset(
+                                    'assets/page-1/images/image-1.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Container(
+                                  // welcomeMAM (18:8)
+                                  margin: EdgeInsets.fromLTRB(
+                                      0 * fem, 0 * fem, 250 * fem, 0 * fem),
+                                  child: Text(
+                                    'SignUp',
+                                    style: SafeGoogleFont(
+                                      'Inter',
+                                      fontSize: 20 * ffem,
+                                      fontWeight: FontWeight.w800,
+                                      height: 1.2125 * ffem / fem,
+                                      color: Color(0xff7095b5),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: TextField(
+                                    onChanged: (value) {},
+                                    controller: controller.namecontroller,
+                                    decoration: InputDecoration(
+                                        hintText: 'Name',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        )),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: TextField(
+                                    onChanged: (value) {},
+                                    controller: controller.emailcontroller,
+                                    decoration: InputDecoration(
+                                        hintText: 'Email',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        )),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: TextField(
+                                    onChanged: (value) {},
+                                    controller: controller.passwordcontroller,
+                                    decoration: InputDecoration(
+                                        hintText: 'Password',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        )),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: TextField(
+                                    onChanged: (value) {},
+                                    controller:
+                                        controller.Short_addersscontroller,
+                                    decoration: InputDecoration(
+                                        hintText: 'Short adderss',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        )),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                    onPressed: () async {
+                                      controller.signup();
+                                    },
+                                    child: const Text(
+                                        'Sign Up') /*onPressed: onPressedSubmit*/
+                                    ),
+                                SizedBox(height: 14),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Already have an account? ",
+                                      style: TextStyle(color: Colors.black54),
+                                    ),
+                                    InkWell(
+                                      onTap: () => Get.to(() => Login()),
+                                      child: Text(
+                                        "Login",
+                                        style:
+                                            TextStyle(color: Colors.lightBlue),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
                   ),
                   /*DropdownMenuItem<String>buildMenuItem(String item) => DropdownMenuItem(
                   value: item,

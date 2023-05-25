@@ -11,8 +11,9 @@ import 'package:myapp/Utils/Constant.dart';
 import 'package:myapp/Utils/Helpers.dart';
 import 'package:myapp/page-1/NavigationDrawerWidget.dart';
 import 'package:myapp/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class My_Report extends StatelessWidget {
+class Missing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double baseWidth = 360;
@@ -31,20 +32,21 @@ class My_Report extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Color(0xff7095b5),
                 ),
+
                 child: Stack(
                   children: [
                     Scaffold(
                       body: Column(
                         children: [
                           SizedBox(
-                            height: 30,
+                            height: 70,
                           ),
                           Container(
                             // myreportFNd (48:77)
                             margin: EdgeInsets.fromLTRB(
                                 0 * fem, 0 * fem, 200 * fem, 0 * fem),
                             child: Text(
-                              'My Reports',
+                              'Missing car',
                               style: SafeGoogleFont(
                                 'Inter',
                                 fontSize: 28 * ffem,
@@ -63,7 +65,7 @@ class My_Report extends StatelessWidget {
                                       margin: EdgeInsets.symmetric(
                                           vertical: 10, horizontal: 10),
                                       child: ListView(
-                                          children: controller.reports
+                                          children: controller.missings
                                               .map((report) => Container(
                                                     padding:
                                                         EdgeInsets.symmetric(
@@ -117,6 +119,20 @@ class My_Report extends StatelessWidget {
                                                                 )),
                                                           ],
                                                         ),
+                                                        IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              await launchUrl(
+                                                                  Uri.parse(
+                                                                      "https://www.google.com/maps/search/?api=1&query=${report.reporter!.shortAddress}"),
+                                                                  mode: LaunchMode
+                                                                      .externalApplication);
+                                                            },
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .location_pin,
+                                                              color: Colors.red,
+                                                            ))
                                                       ],
                                                     ),
                                                   ))

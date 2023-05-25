@@ -6,15 +6,23 @@ import 'package:myapp/Model/UserModel.dart';
 
 class local_storage extends GetxController {
   final storage = GetStorage();
-  void save_user(UserModel userModel) {
-    storage.write("user", json.encode(userModel.toJson()));
+  save_user(UserModel userModel) async {
+    await storage.write("user", json.encode(userModel.toJson()));
   }
 
   UserModel Get_UserModel() {
-    return UserModel.fromJson(json.decode(storage.read("user")));
+    UserModel user = UserModel.fromJson(json.decode(storage.read("user")));
+    update();
+    return user;
   }
 
   void remove_user() {
     storage.remove("user");
+  }
+
+  @override
+  void onInit() {
+//    Get_UserModel();
+    super.onInit();
   }
 }

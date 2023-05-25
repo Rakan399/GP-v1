@@ -19,7 +19,7 @@ class Logo extends StatefulWidget {
 }
 
 class _LogoState extends State<Logo> {
-  final Usercont usercont = Get.put(Usercont());
+  final Usercont usercont = Get.find<Usercont>();
   @override
   void initState() {
     super.initState();
