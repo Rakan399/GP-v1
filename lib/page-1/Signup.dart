@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,22 +35,56 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: SignUpForm()),
-    );
+  bool isverified = false;
+  bool isEmailSend = false;
+  Timer? timer;
+  Usercont usercont = Get.find<Usercont>();
+
+  onLogin() {
+    isverified = usercont.auth.currentUser!.emailVerified;
+    if (!isverified) {
+      send_verification_email();
+      verifecation_box();
+      timer = Timer.periodic(Duration(seconds: 3), (_) => check_email());
+    }
   }
-}
 
-class SignUpForm extends StatefulWidget {
   @override
-  _SignUpFormState createState() => _SignUpFormState();
-}
+  void dispose() {
+    timer!.cancel();
+    super.dispose();
+  }
 
-class _SignUpFormState extends State<SignUpForm> {
+  check_email() async {
+    await usercont.auth.currentUser!.reload();
+    setState(() {
+      isverified = usercont.auth.currentUser!.emailVerified;
+    });
+    if (isverified) {
+      timer!.cancel();
+    }
+  }
+
+  send_verification_email() async {
+    final user = usercont.auth.currentUser;
+    await user!.sendEmailVerification();
+  }
+
+  verifecation_box() {
+    Get.dialog(
+        Dialog(
+          child: Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(color: Colors.white),
+            child: Center(
+              child: Text("Please Verify Your Email"),
+            ),
+          ),
+        ),
+        barrierDismissible: false);
+  }
+
   final _formKey = GlobalKey<FormState>();
   final _passKey = GlobalKey<FormFieldState>();
 

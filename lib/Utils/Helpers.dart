@@ -28,9 +28,9 @@ onGetPlateNumber(File? image) async {
   }
 }
 
-Future<File> onPickImage() async {
+Future<File> onPickImage(ImageSource source) async {
   final ImagePicker picker = ImagePicker();
-  XFile? _image = await picker.pickImage(source: ImageSource.gallery);
+  XFile? _image = await picker.pickImage(source: source);
 
   if (_image != null) {
     File image = File(_image.path);

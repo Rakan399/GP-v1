@@ -46,7 +46,7 @@ class Welcome extends StatelessWidget {
                       style: SafeGoogleFont(
                         'Inter',
                         fontSize: 64 * ffem,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.normal,
                         height: 1.2125 * ffem / fem,
                         color: Color(0xffffffff),
                       ),

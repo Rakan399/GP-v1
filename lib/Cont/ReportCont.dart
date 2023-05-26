@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:myapp/Model/UserModel.dart';
 import 'package:myapp/Utils/Constant.dart';
 import 'package:myapp/Utils/Helpers.dart';
@@ -41,7 +42,7 @@ class Report_cont extends GetxController {
     loading.value = true;
     update();
     try {
-      final file = await onPickImage();
+      final file = await onPickImage(await use_image_type());
       platenumbercontroller.text = await onGetPlateNumber(file);
     } catch (e) {
       print("Something is wrong $e");
@@ -80,27 +81,38 @@ class Report_cont extends GetxController {
         .get();
     missings = data.docs.map((report) => ReportModel.fromjson(report)).toList();
     print(data.docs[0].data());
-    //     .then((value) =>
-    //         value.docs.map((report) => ReportModel.fromjson(report)).toList())
-    //     .onError((error, stackTrace) {
-    //   print("something went wrong ${error.toString()}");
-    //   Get.snackbar("something went wrong with fetching data", error.toString());
-    //   print(error.toString());
-    //   return [];
-    // });
+
     loading.value = false;
 
     update();
   }
 
-//   missing_car(car_model car, String status) {
-//     loading.value = true;
-//     update();
-//     _firebaseFirestore
-//         .collection("Car")
-//         .doc(car.PlateNumber! + car.CompanyCar!)
-//         .update({"status": status});
-//     loading.value = false;
-//     update();
-//   }
+  use_image_type() async {
+    return await Get.dialog(
+        Dialog(
+          child: Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(color: Colors.white),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Get.back(result: ImageSource.gallery);
+                      },
+                      child: Text("Garlley")),
+                  InkWell(
+                      onTap: () {
+                        Get.back(result: ImageSource.camera);
+                      },
+                      child: Text("Camera")),
+                ],
+              ),
+            ),
+          ),
+        ),
+        barrierDismissible: false);
+  }
 }

@@ -51,8 +51,4 @@ class _LogoState extends State<Logo> {
       ),
     );
   }
-
-  /* Widget content() {
-    return Container(child: Lottie.asset('assets/page-1/App_Logo'));
-  }*/
 }

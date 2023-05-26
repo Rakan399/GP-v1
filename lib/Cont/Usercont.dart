@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:myapp/Cont/local_storage.dart';
 import 'package:myapp/Model/UserModel.dart';
 import 'package:myapp/page-1/Welcome.dart';
+import 'package:myapp/page-1/mail_var.dart';
 import 'package:myapp/page-1/mainscreen.dart';
 import '../page-1/Home.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -22,9 +25,10 @@ class Usercont extends GetxController {
   final passwordcontroller = TextEditingController();
   final Short_addersscontroller = TextEditingController();
   String username = " ";
-//
+  bool isverified = false;
 
-  ///
+  Timer? timer;
+
   void signup() async {
     loading.value = true;
     update();
@@ -33,13 +37,49 @@ class Usercont extends GetxController {
           email: emailcontroller.text, password: passwordcontroller.text);
       user = userc.user;
       Add_user();
-      Get.offAll(() => mainscreen());
+      isverified = auth.currentUser!.emailVerified;
+      if (!isverified) {
+        send_verification_email();
+        timer = Timer.periodic(Duration(seconds: 3), (_) => check_email());
+      }
       {}
     } catch (e) {
       Get.snackbar("erorr", e.toString());
     }
     loading.value = false;
     update();
+  }
+
+  check_email() async {
+    await auth.currentUser!.reload();
+
+    isverified = auth.currentUser!.emailVerified;
+
+    if (isverified) {
+      timer!.cancel();
+      Get.offAll(() => mail_var_screen());
+    }
+  }
+
+  send_verification_email() async {
+    final user = auth.currentUser;
+    await user!.sendEmailVerification();
+    verifecation_box();
+  }
+
+  verifecation_box() {
+    Get.dialog(
+        Dialog(
+          child: Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(color: Colors.white),
+            child: Center(
+              child: Text("Please Verify Your Email"),
+            ),
+          ),
+        ),
+        barrierDismissible: false);
   }
 
   Add_user() async {
@@ -75,7 +115,7 @@ class Usercont extends GetxController {
         await Local_Storage.save_user(userfetched);
         username = Local_Storage.Get_UserModel().name!;
 
-        Get.offAll(() => mainscreen());
+        Get.offAll(() => mail_var_screen());
       }
     } catch (e) {
       print(e);
@@ -99,7 +139,13 @@ class Usercont extends GetxController {
 
   Home_Navigater() {
     if (auth.currentUser != null) {
-      Get.offAll(() => mainscreen());
+      isverified = auth.currentUser!.emailVerified;
+      if (!isverified) {
+        send_verification_email();
+        timer = Timer.periodic(Duration(seconds: 3), (_) => check_email());
+      } else {
+        Get.offAll(() => mainscreen());
+      }
     } else {
       Get.offAll(() => Welcome());
     }
@@ -109,6 +155,20 @@ class Usercont extends GetxController {
     auth.signOut();
     Local_Storage.remove_user();
     Get.offAll(() => Welcome());
+  }
+
+  restpassword() async {
+    loading.value = true;
+    update();
+
+    try {
+      await auth.sendPasswordResetEmail(email: emailcontroller.text);
+      Get.snackbar("Email Sent Sucsessfully", "");
+    } catch (e) {
+      Get.snackbar("Something went wrong", e.toString());
+    }
+    loading.value = false;
+    update();
   }
 
   @override

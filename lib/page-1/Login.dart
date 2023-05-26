@@ -6,6 +6,7 @@ import 'package:myapp/Cont/Usercont.dart';
 import 'package:myapp/page-1/My_Car.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myapp/page-1/Signup.dart';
+import 'package:myapp/page-1/forgot_password.dart';
 import 'package:myapp/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -116,18 +117,29 @@ class Login extends StatelessWidget {
                                   Text('Login') /*onPressed: onPressedSubmit*/
                               ),
                           SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Column(
                             children: [
-                              Text(
-                                "You don't have an account? ",
-                                style: TextStyle(color: Colors.black54),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "You don't have an account? ",
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                  InkWell(
+                                    onTap: () => Get.to(() => Signup()),
+                                    child: Text(
+                                      "Signup",
+                                      style: TextStyle(color: Colors.lightBlue),
+                                    ),
+                                  ),
+                                ],
                               ),
                               InkWell(
-                                onTap: () => Get.to(() => Signup()),
+                                onTap: () => Get.to(() => forgot_password()),
                                 child: Text(
-                                  "Signup",
-                                  style: TextStyle(color: Colors.lightBlue),
+                                  "forgot your password ",
+                                  style: TextStyle(color: Colors.black54),
                                 ),
                               ),
                             ],

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:myapp/Model/UserModel.dart';
 import 'package:myapp/Utils/Constant.dart';
 import 'package:myapp/Utils/Helpers.dart';
-
 import '../Model/carModel.dart';
 import 'local_storage.dart';
 
@@ -35,7 +35,7 @@ class car extends GetxController {
     loading.value = true;
     update();
     try {
-      final file = await onPickImage();
+      final file = await onPickImage(await use_image_type());
       platenumbercontroller.text = await onGetPlateNumber(file);
     } catch (e) {
       print("Something is wrong $e");
@@ -86,5 +86,34 @@ class car extends GetxController {
     loading.value = false;
     update();
     get_cars();
+  }
+
+  use_image_type() async {
+    return await Get.dialog(
+        Dialog(
+          child: Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(color: Colors.white),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Get.back(result: ImageSource.gallery);
+                      },
+                      child: Text("Garlley")),
+                  InkWell(
+                      onTap: () {
+                        Get.back(result: ImageSource.camera);
+                      },
+                      child: Text("Camera")),
+                ],
+              ),
+            ),
+          ),
+        ),
+        barrierDismissible: false);
   }
 }
