@@ -7,7 +7,7 @@ import 'package:myapp/page-1/Signup.dart';
 import 'package:myapp/utils.dart';
 import 'package:myapp/page-1/AddCar.dart';
 import 'package:myapp/page-1/Report.dart';
-import 'package:myapp/page-1/DefectiveCar.dart';
+
 import 'package:myapp/page-1/NavigationDrawerWidget.dart';
 
 class Welcome extends StatelessWidget {
@@ -43,8 +43,8 @@ class Welcome extends StatelessWidget {
                         16 * fem, 0 * fem, 0 * fem, 24 * fem),
                     child: Text(
                       'Welcome',
-                      style: SafeGoogleFont(
-                        'Inter',
+                      style: TextStyle(
+                        fontFamily: 'GreatVibes',
                         fontSize: 64 * ffem,
                         fontWeight: FontWeight.normal,
                         height: 1.2125 * ffem / fem,

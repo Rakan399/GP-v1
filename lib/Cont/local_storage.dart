@@ -12,7 +12,7 @@ class local_storage extends GetxController {
 
   UserModel Get_UserModel() {
     UserModel user = UserModel.fromJson(json.decode(storage.read("user")));
-    update();
+
     return user;
   }
 
