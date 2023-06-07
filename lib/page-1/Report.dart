@@ -37,7 +37,7 @@ class _Report extends State<Report> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    this.Type_Report.add({"id": 1, "Type": "Suspiciou Car"});
+    this.Type_Report.add({"id": 1, "Type": "Suspicious Car"});
     this.Type_Report.add({"id": 2, "Type": "Defective Car"});
 
     this.ComanyCar.add({"id": 1, "label": "TOYOTA"});

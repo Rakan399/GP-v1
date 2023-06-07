@@ -80,7 +80,7 @@ class Report_cont extends GetxController {
         .where("owner.uid", isEqualTo: userModel.uid)
         .get();
     missings = data.docs.map((report) => ReportModel.fromjson(report)).toList();
-    print(data.docs[0].data());
+    // print(data.docs[0].data());
 
     loading.value = false;
 

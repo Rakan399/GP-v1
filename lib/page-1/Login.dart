@@ -102,6 +102,7 @@ class Login extends StatelessWidget {
                               onChanged: (value) {
                                 _password = value;
                               },
+                              obscureText: true,
                               decoration: InputDecoration(
                                   hintText: 'Password',
                                   border: OutlineInputBorder(

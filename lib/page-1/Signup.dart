@@ -240,13 +240,6 @@ class _FormPageState extends State<FormPage> {
                             ),
                           ),
                   ),
-                  /*DropdownMenuItem<String>buildMenuItem(String item) => DropdownMenuItem(
-                  value: item,
-                child: Text(item
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                ),
-                
-                );*/
                 ],
               ),
             ),
